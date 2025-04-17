@@ -1,0 +1,23 @@
+server:
+  servlet:
+    context-path: /api/v1
+  port: 8081
+
+spring:
+  application:
+    name: library
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/library
+    username: silvia
+    password: silvia123
+    driver-Class-Name: org.postgresql.Driver
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-0-master.xml
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
