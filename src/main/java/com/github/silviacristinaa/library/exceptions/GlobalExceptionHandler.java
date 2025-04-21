@@ -16,14 +16,14 @@ public class GlobalExceptionHandler {
 
     private static final String EXCEPTION_MSG_UNEXPECTED_ERROR = "Unexpected error";
     private static final String EXCEPTION_MSG_ARGUMENTS_NOT_VALID = "Arguments not valid";
-    private static final String ILLEGAL_STATE_MSG = "Illegal State";
+    private static final String BAD_REQUEST_MSG = "Bad Request";
     private static final String NOT_FOUND_MSG = "Not found";
 
     private static final String EXCEPTION_LOG_MSG = "e=%s,m=%s";
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<ErrorMessage> processException(final Exception ex) {
+    public ResponseEntity<ErrorMessage> handleUnexpectedException(final Exception ex) {
         logE(ex);
 
         return new ResponseEntity<>(ErrorMessage.builder().message(EXCEPTION_MSG_UNEXPECTED_ERROR)
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorMessage> handleMethodArgumentBadRequestException(
+    public ResponseEntity<ErrorMessage> handleMethodArgumentNotValidException(
             final MethodArgumentNotValidException ex) {
         logE(ex);
 
@@ -40,17 +40,17 @@ public class GlobalExceptionHandler {
                 .errors(Arrays.asList(ex.getMessage())).build(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<ErrorMessage> handleMethodArgumentIllegalStateException(final IllegalStateException ex) {
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ErrorMessage> handleBadRequestException(final BadRequestException ex) {
         logE(ex);
 
-        final ErrorMessage errorMessage = ErrorMessage.builder().message(ILLEGAL_STATE_MSG)
+        final ErrorMessage errorMessage = ErrorMessage.builder().message(BAD_REQUEST_MSG)
                 .errors(Arrays.asList(ex.getMessage())).build();
-        return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ErrorMessage> handleMethodArgumentNotFoundException(final NotFoundException ex) {
+    public ResponseEntity<ErrorMessage> handleNotFoundException(final NotFoundException ex) {
         logE(ex);
 
         final ErrorMessage errorMessage = ErrorMessage.builder().message(NOT_FOUND_MSG)

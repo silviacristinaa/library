@@ -5,6 +5,7 @@ import com.github.silviacristinaa.library.dtos.requests.BookStatusRequestDto;
 import com.github.silviacristinaa.library.dtos.responses.BookResponseDto;
 import com.github.silviacristinaa.library.entities.Book;
 import com.github.silviacristinaa.library.enums.BookStatusEnum;
+import com.github.silviacristinaa.library.exceptions.BadRequestException;
 import com.github.silviacristinaa.library.exceptions.NotFoundException;
 import com.github.silviacristinaa.library.repositories.BookRepository;
 import com.github.silviacristinaa.library.services.BookService;
@@ -67,11 +68,11 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public void delete(Long id) throws NotFoundException {
+    public void delete(Long id) throws NotFoundException, BadRequestException {
         Book book = findById(id);
 
         if (book.getStatus() == BookStatusEnum.BORROWED) {
-            throw new IllegalStateException(CANNOT_DELETE_BOOK_WITH_BORROWED_STATUS);
+            throw new BadRequestException(CANNOT_DELETE_BOOK_WITH_BORROWED_STATUS);
         }
 
         bookRepository.delete(book);
