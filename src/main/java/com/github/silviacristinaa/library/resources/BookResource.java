@@ -3,6 +3,7 @@ package com.github.silviacristinaa.library.resources;
 import com.github.silviacristinaa.library.dtos.requests.BookRequestDto;
 import com.github.silviacristinaa.library.dtos.requests.BookStatusRequestDto;
 import com.github.silviacristinaa.library.dtos.responses.BookResponseDto;
+import com.github.silviacristinaa.library.exceptions.BadRequestException;
 import com.github.silviacristinaa.library.exceptions.NotFoundException;
 import com.github.silviacristinaa.library.services.BookService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -73,7 +74,7 @@ public class BookResource {
     @Operation(summary = "Delete")
     @DeleteMapping(value = ID)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> delete(@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity<Void> delete(@PathVariable Long id) throws NotFoundException, BadRequestException {
         bookService.delete(id);
         return ResponseEntity.noContent().build();
     }
