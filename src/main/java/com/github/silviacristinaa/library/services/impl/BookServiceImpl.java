@@ -78,8 +78,14 @@ public class BookServiceImpl implements BookService {
         bookRepository.delete(book);
     }
 
-    private Book findById(Long id) throws NotFoundException {
+    public Book findById(Long id) throws NotFoundException {
         return bookRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format(BOOK_NOT_FOUND, id)));
+    }
+
+    @Override
+    @Transactional
+    public Book save(Book book) {
+        return bookRepository.save(book);
     }
 }
