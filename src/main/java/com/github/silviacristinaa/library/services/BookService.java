@@ -22,4 +22,8 @@ public interface BookService {
     void update(Long id, BookRequestDto bookRequestDto) throws NotFoundException;
 
     void delete(Long id) throws NotFoundException, BadRequestException;
+
+    Book findById(Long id) throws NotFoundException;
+
+    Book save(Book book);
 }
